@@ -1,0 +1,49 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #333;
+  background-color: #f3f3f3;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+}
+
+button {
+  border-radius: 4px;
+  border: 1px solid transparent;
+  background: #00b3b3;
+  color: #fff;
+  padding: 0.6em 1.2em;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.3s;
+  outline: none;
+  box-shadow: none;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+input {
+  display: block;
+  outline: none;
+  box-shadow: none;
+  border: 1px solid #e8e8e8;
+  padding-left: 16px;
+}

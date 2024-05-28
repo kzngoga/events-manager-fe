@@ -1,0 +1,33 @@
+name: Lint, Test, Build & Deploy
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, edited]
+  push:
+    branches: [main]
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Yarn setup
+        uses: DerYeger/yarn-setup-action@master
+        with:
+          node-version: "18.19.0"
+      - name: Run lint command
+        run: yarn lint
+  build:
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Yarn setup
+        uses: DerYeger/yarn-setup-action@master
+        with:
+          node-version: "18.19.0"
+      - name: Run lint command
+        run: yarn build
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy app
+        run: echo "Deploy application..."

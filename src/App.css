@@ -1,0 +1,137 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 100vh;
+  gap: 20px;
+}
+
+.event-form {
+  width: 40%;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 4px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.event-form__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0px;
+}
+
+.event-form__header.form-open {
+  margin-bottom: 20px;
+}
+
+.event-form h4 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.btn--close {
+  background-color: #ff4d4d;
+}
+
+.event-form__content {
+  position: relative;
+  padding-top: 30px;
+}
+
+.event-form__content::before {
+  content: "";
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  border-top: 1px solid #e8e8e8;
+}
+
+.event-form__content .form-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 15px;
+}
+
+.event-form__group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.event-form__group input {
+  width: 100%;
+  height: 35px;
+}
+
+.event-form__group label {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.event-form__save {
+  text-align: center;
+}
+
+.event-form__save button {
+  padding-left: 30px;
+  padding-right: 30px;
+  margin-top: 30px;
+}
+
+/* EVENTS TABLE */
+.table-container {
+  width: 80%;
+  background-color: #fff;
+  padding: 16px;
+  border-radius: 4px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.table-container table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #e8e8e8;
+}
+
+.table-container table tbody td,
+.table-container table thead th {
+  text-align: left;
+  padding: 10px;
+}
+
+.table-container table thead th {
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.table-container table tbody td {
+  font-size: 14px;
+}
+
+.table-container table tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.table-container .table-info {
+  font-weight: bold;
+  padding: 12px;
+  font-size: 14px;
+}
+
+.table-container .edit-btn {
+  background-color: #3399ff;
+}
+
+.table-container .delete-btn {
+  background-color: #ff4d4d;
+  margin-left: 16px;
+}
+
+.table-container input {
+  width: 100%;
+  height: 35px;
+}
