@@ -1,7 +1,7 @@
 import { convertDateForInput, convertDateForTable } from "../../helpers/date";
 import {} from "vitest";
 
-describe("convertDateForInput", () => {
+describe("convertDateForInput()", () => {
   const validDateRegex = /^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
 
   it("Should receive a timestamp & return a date with YYYY-MM-dd format", () => {
@@ -20,7 +20,7 @@ describe("convertDateForInput", () => {
   });
 });
 
-describe("convertDateForTable", () => {
+describe("convertDateForTable()", () => {
   const validDateRegex = /^([1-9]|[12]\d|3[01])\/([1-9]|1[0-2])\/(\d{4})$/;
 
   it("Should receive a timestamp & return a date with d/M/YYYY format", () => {
