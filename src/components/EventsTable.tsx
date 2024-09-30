@@ -60,7 +60,7 @@ const EventsTable = () => {
         </thead>
         <tbody>
           <DisplayData>
-            {eventsData.map((item, idx) => (
+            {eventsData?.map((item, idx) => (
               <EventsTableRow
                 key={item.id}
                 item={item}

@@ -1,0 +1,13 @@
+services:
+  app:
+    build: .
+    container_name: event-manager-fe-app
+    ports:
+      - 4000:4000
+    develop:
+      watch:
+        - path: ./src
+          target: /event-manager-fe-app/src
+          action: sync
+        - path: ./package.json
+          action: rebuild

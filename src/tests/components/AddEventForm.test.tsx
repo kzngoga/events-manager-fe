@@ -3,9 +3,7 @@ import userEvent from "@testing-library/user-event";
 import AddEventForm from "../../components/AddEventForm";
 import { EventInput } from "../../types";
 import AllProviders from "../AllProviders";
-import { server } from "../mocks/server";
-import { http, HttpResponse } from "msw";
-import { apiUrl } from "../mocks/handlers";
+import { simulatePostError } from "../utils";
 
 describe("AddEventForm", () => {
   const validFormData: EventInput = {
@@ -149,7 +147,7 @@ describe("AddEventForm", () => {
   });
 
   it("Should show error text when the create event API fails", async () => {
-    server.use(http.post(`${apiUrl}/events/new`, () => HttpResponse.error()));
+    simulatePostError("events/new");
 
     const { getAddButton, getEventForm, user, getSaveButton } =
       renderComponent();

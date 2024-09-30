@@ -16,6 +16,6 @@ export const handlers = [
     const allEvents = db.event.getAll();
 
     // Respond with a mocked response.
-    return HttpResponse.json(allEvents, { status: 200 });
+    return HttpResponse.json({ data: allEvents }, { status: 200 });
   }),
 ];
