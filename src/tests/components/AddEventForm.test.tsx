@@ -4,16 +4,9 @@ import AddEventForm from "../../components/AddEventForm";
 import { EventInput } from "../../types";
 import AllProviders from "../AllProviders";
 import { simulatePostError } from "../utils";
+import { validFormData } from "../mocks/data";
 
 describe("AddEventForm", () => {
-  const validFormData: EventInput = {
-    entranceFee: 50,
-    eventDate: "2024-10-23",
-    location: "Kirehe Stadium",
-    name: "John Doe",
-    organiser: "EAP",
-  };
-
   const renderComponent = () => {
     render(<AddEventForm />, { wrapper: AllProviders });
 

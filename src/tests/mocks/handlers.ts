@@ -18,4 +18,13 @@ export const handlers = [
     // Respond with a mocked response.
     return HttpResponse.json({ data: allEvents }, { status: 200 });
   }),
+  http.put(`${apiUrl}/events/update/:id`, ({ params, request }) => {
+    const updated = db.event.update({
+      where: { id: { equals: params?.id as string } },
+      data: request.body as never,
+    });
+
+    // Respond with a mocked response.
+    return HttpResponse.json(updated, { status: 201 });
+  }),
 ];
