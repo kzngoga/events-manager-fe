@@ -26,7 +26,7 @@ jobs:
         uses: DerYeger/yarn-setup-action@master
         with:
           node-version: "18.19.0"
-      - name: Run test command
+      - name: Run the test command
         run: yarn test
   build:
     needs: lint
