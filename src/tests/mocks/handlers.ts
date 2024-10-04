@@ -27,4 +27,12 @@ export const handlers = [
     // Respond with a mocked response.
     return HttpResponse.json(updated, { status: 201 });
   }),
+  http.delete(`${apiUrl}/events/delete/:id`, ({ params }) => {
+    db.event.delete({
+      where: { id: { equals: params?.id as string } },
+    });
+
+    // Respond with a mocked response.
+    return HttpResponse.json({ status: 201 });
+  }),
 ];

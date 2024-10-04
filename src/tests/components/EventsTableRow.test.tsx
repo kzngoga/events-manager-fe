@@ -9,24 +9,24 @@ import { NullableEventInput, validFormData } from "../mocks/data";
 import AllProviders from "../AllProviders";
 
 describe("EventsTableRow", () => {
-  let product: EventItem;
+  let event: EventItem;
 
   beforeAll(() => {
-    product = db.event.create();
+    event = db.event.create();
   });
 
   afterAll(() => {
-    db.event.delete({ where: { id: { equals: product.id } } });
+    db.event.delete({ where: { id: { equals: event.id } } });
   });
 
   const renderComponent = (props?: SelectedItem | null) => {
     const mockedSetSelectedItem = vi.fn();
-    const productIndex = 0;
+    const eventIndex = 0;
 
     const { rerender } = render(
       <EventsTableRow
-        idx={productIndex}
-        item={product}
+        idx={eventIndex}
+        item={event}
         selectedItem={props || null}
         setSelectedItem={mockedSetSelectedItem}
       />,
@@ -34,7 +34,7 @@ describe("EventsTableRow", () => {
     );
 
     return {
-      productIndex,
+      eventIndex,
       user: userEvent.setup(),
       getEditButton: () => screen.queryByRole("button", { name: /edit/i }),
       getDeleteButton: () => screen.queryByRole("button", { name: /delete/i }),
@@ -49,7 +49,7 @@ describe("EventsTableRow", () => {
   };
 
   it("Should display events table row data", () => {
-    const { getEditButton, getDeleteButton, productIndex } = renderComponent();
+    const { getEditButton, getDeleteButton, eventIndex } = renderComponent();
 
     const tableRow = screen.getByRole("row");
     const tableRowCells = getAllByRole(tableRow, "cell");
@@ -71,14 +71,12 @@ describe("EventsTableRow", () => {
         ];
 
         const columnField = columns[index];
-        const cellValue = product[columnField as keyof EventItem];
+        const cellValue = event[columnField as keyof EventItem];
 
         if (columnField === "eventDate") {
-          expect(element.innerHTML).toBe(
-            convertDateForTable(product.eventDate)
-          );
+          expect(element.innerHTML).toBe(convertDateForTable(event.eventDate));
         } else if (columnField === "index") {
-          expect(element.innerHTML).toBe((productIndex + 1).toString());
+          expect(element.innerHTML).toBe((eventIndex + 1).toString());
         } else {
           expect(element.innerHTML).toBe(cellValue?.toString());
         }
@@ -89,7 +87,7 @@ describe("EventsTableRow", () => {
     "Should show the edit row when the $actionType button is clicked",
     async ({ actionType }) => {
       const {
-        productIndex,
+        eventIndex,
         user,
         rerender,
         getEditButton,
@@ -109,13 +107,13 @@ describe("EventsTableRow", () => {
 
       const props: SelectedItem = {
         actionType: actionType as SelectedItem["actionType"],
-        id: product.id!,
+        id: event.id!,
       };
 
       rerender(
         <EventsTableRow
-          idx={productIndex}
-          item={product}
+          idx={eventIndex}
+          item={event}
           selectedItem={props}
           setSelectedItem={mockedSetSelectedItem}
         />
@@ -190,7 +188,7 @@ describe("EventsTableRow", () => {
     it("Should render form filled with data ", async () => {
       const { getSaveButton, getCloseButton } = renderComponent({
         actionType: "edit",
-        id: product.id!,
+        id: event.id!,
       });
 
       const {
@@ -201,11 +199,11 @@ describe("EventsTableRow", () => {
         locationInput,
       } = await getEventForm();
 
-      expect(nameInput).toHaveValue(product.name);
-      expect(dateInput).toHaveValue(convertDateForInput(product.eventDate));
-      expect(organiserInput).toHaveValue(product.organiser);
-      expect(entranceFeeInput).toHaveValue(product.entranceFee);
-      expect(locationInput).toHaveValue(product.location);
+      expect(nameInput).toHaveValue(event.name);
+      expect(dateInput).toHaveValue(convertDateForInput(event.eventDate));
+      expect(organiserInput).toHaveValue(event.organiser);
+      expect(entranceFeeInput).toHaveValue(event.entranceFee);
+      expect(locationInput).toHaveValue(event.location);
 
       expect(getSaveButton()).toBeInTheDocument();
       expect(getCloseButton()).toBeInTheDocument();
@@ -214,7 +212,7 @@ describe("EventsTableRow", () => {
     it("Should disable the save button when form is not valid", async () => {
       const { getSaveButton } = renderComponent({
         actionType: "edit",
-        id: product.id!,
+        id: event.id!,
       });
 
       const { fillForm } = await getEventForm();
@@ -229,20 +227,20 @@ describe("EventsTableRow", () => {
         getSaveButton,
         getCloseButton,
         rerender,
-        productIndex,
+        eventIndex,
         user,
         mockedSetSelectedItem,
       } = renderComponent({
         actionType: "edit",
-        id: product.id!,
+        id: event.id!,
       });
 
       await user.click(getSaveButton()!);
 
       rerender(
         <EventsTableRow
-          idx={productIndex}
-          item={product}
+          idx={eventIndex}
+          item={event}
           selectedItem={null}
           setSelectedItem={mockedSetSelectedItem}
         />
@@ -258,18 +256,18 @@ describe("EventsTableRow", () => {
       const {
         getCloseButton,
         getEditButton,
-        productIndex,
+        eventIndex,
         rerender,
         user,
         mockedSetSelectedItem,
-      } = renderComponent({ actionType: "edit", id: product.id! });
+      } = renderComponent({ actionType: "edit", id: event.id! });
 
       await user.click(getCloseButton()!);
 
       rerender(
         <EventsTableRow
-          idx={productIndex}
-          item={product}
+          idx={eventIndex}
+          item={event}
           selectedItem={null}
           setSelectedItem={mockedSetSelectedItem}
         />
@@ -277,6 +275,66 @@ describe("EventsTableRow", () => {
 
       expect(mockedSetSelectedItem).toHaveBeenCalledWith(null);
       expect(getEditButton()).toBeInTheDocument();
+    });
+  });
+
+  describe("DeleteTableRow", () => {
+    it("Should show the confirm & close button when loaded", () => {
+      const { getConfirmButton, getCancelButton } = renderComponent({
+        actionType: "delete",
+        id: event.id!,
+      });
+
+      expect(getCancelButton()).toBeInTheDocument();
+      expect(getConfirmButton()).toBeInTheDocument();
+    });
+
+    it("Should hide the delete row action buttons when the 'cancel' button is clicked", async () => {
+      const {
+        getConfirmButton,
+        getCancelButton,
+        getDeleteButton,
+        user,
+        eventIndex,
+        rerender,
+        mockedSetSelectedItem,
+      } = renderComponent({
+        actionType: "delete",
+        id: event.id!,
+      });
+
+      await user.click(getCancelButton()!);
+
+      rerender(
+        <EventsTableRow
+          idx={eventIndex}
+          item={event}
+          selectedItem={null}
+          setSelectedItem={mockedSetSelectedItem}
+        />
+      );
+
+      expect(mockedSetSelectedItem).toHaveBeenCalledWith(null);
+      expect(getDeleteButton()).toBeInTheDocument();
+      expect(getCancelButton()).not.toBeInTheDocument();
+      expect(getConfirmButton()).not.toBeInTheDocument();
+    });
+
+    it("Should delete the event when 'confirm' button is clicked", async () => {
+      const { getConfirmButton, user, mockedSetSelectedItem } = renderComponent(
+        {
+          actionType: "delete",
+          id: event.id!,
+        }
+      );
+
+      await user.click(getConfirmButton()!);
+
+      // Get current events from DB
+      const events = db.event.getAll();
+
+      expect(mockedSetSelectedItem).toHaveBeenCalledWith(null);
+      expect(events).toHaveLength(0);
     });
   });
 });
