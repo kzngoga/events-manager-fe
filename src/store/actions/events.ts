@@ -33,6 +33,11 @@ export const fetchAllEvents = async (dispatch: DispatchAction) => {
     });
 
     const response = await AxiosClient().get("/events/all");
+
+    if (!response.data.data || !response.data?.data?.length) {
+      throw new Error("No events found!");
+    }
+
     dispatch({
       type: ActionTypes.FETCH_ALL_EVENTS,
       payload: {

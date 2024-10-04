@@ -15,6 +15,7 @@ const DEFAULT_VALUES: EventInput = {
 const AddEventForm = () => {
   const [showEventForm, setShowEventForm] = useState(false);
   const [eventForm, setEventForm] = useState<EventInput>(DEFAULT_VALUES);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const {
     dispatch,
@@ -24,6 +25,7 @@ const AddEventForm = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
+    setErrorMessage("");
     const payload: EventItem = {
       ...eventForm,
       eventDate: new Date(eventForm.eventDate as string).getTime(),
@@ -37,6 +39,8 @@ const AddEventForm = () => {
       setEventForm(DEFAULT_VALUES);
       setShowEventForm(false);
       fetchAllEvents(dispatch);
+    } else if (newEvent.status === "error") {
+      setErrorMessage("Error: Event creation failed, please try again later!");
     }
   }, [newEvent.status, dispatch]);
 
@@ -78,7 +82,7 @@ const AddEventForm = () => {
 
       {showEventForm && (
         <div className="event-form__content">
-          <form onSubmit={handleSubmit}>
+          <form aria-label="form" onSubmit={handleSubmit}>
             <div className="form-row">
               <div className="event-form__group">
                 <label className="hint">Event name</label>
@@ -121,8 +125,11 @@ const AddEventForm = () => {
                 />
               </div>
               <div className="event-form__group">
-                <label className="hint">Event date</label>
+                <label className="hint" htmlFor="event-date">
+                  Event date
+                </label>
                 <input
+                  id="event-date"
                   required
                   type="date"
                   value={eventForm.eventDate}
@@ -138,6 +145,8 @@ const AddEventForm = () => {
               </button>
             </div>
           </form>
+
+          {errorMessage && <p className="form-error-text">{errorMessage}</p>}
         </div>
       )}
     </div>

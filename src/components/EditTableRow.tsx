@@ -97,6 +97,7 @@ const EditTableRow = ({
       <td>
         <input
           required
+          aria-label="Event date"
           type="date"
           value={eventForm.eventDate as string}
           placeholder="Event date"
